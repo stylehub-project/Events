@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Cinematic Event Presentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -100,7 +100,8 @@
         color: #e5e7eb;
         overflow: hidden; /* NO SCROLL */
         margin: 0;
-        height: 100vh;
+        height: 100vh; /* Fallback */
+        height: 100dvh; /* Mobile viewport fix */
         width: 100vw;
       }
       
