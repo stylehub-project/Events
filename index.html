@@ -36,6 +36,7 @@
               'marquee': 'marquee 20s linear infinite',
               'audio-wave': 'audioWave 1s ease-in-out infinite',
               'corner-pulse': 'cornerPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'rise': 'rise 5s linear infinite',
             },
             keyframes: {
               float: {
@@ -87,6 +88,11 @@
               cornerPulse: {
                 '0%, 100%': { opacity: '0.5', transform: 'scale(1)' },
                 '50%': { opacity: '1', transform: 'scale(1.2)' },
+              },
+              rise: {
+                '0%': { transform: 'translateY(100%) scale(0.5)', opacity: '0' },
+                '10%': { opacity: '0.8' },
+                '100%': { transform: 'translateY(-50vh) scale(1.2)', opacity: '0' },
               }
             }
           }

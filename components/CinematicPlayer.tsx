@@ -27,7 +27,26 @@ const CinematicMediaFrame: React.FC<CinematicFrameProps> = ({
       {/* 1. Floating Depth Shadow */}
       <div className={`absolute top-10 left-0 right-0 h-full w-[90%] mx-auto ${bgGlow} blur-3xl opacity-20 transform translate-y-8 animate-pulse-glow transition-all duration-1000 group-hover:opacity-40`}></div>
 
-      {/* 2. Floating Info Tags (Outside Frame) */}
+      {/* 2. CHEERS PARTICLES (Surrounding the frame) */}
+      <div className="absolute -inset-8 md:-inset-16 z-0 pointer-events-none overflow-hidden rounded-3xl">
+          {[...Array(30)].map((_, i) => (
+             <div 
+               key={i}
+               className={`absolute rounded-full ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} blur-[1px]`}
+               style={{
+                 left: `${Math.random() * 100}%`,
+                 bottom: '-20%',
+                 width: `${Math.random() * 3 + 2}px`,
+                 height: `${Math.random() * 3 + 2}px`,
+                 animation: `rise ${4 + Math.random() * 4}s cubic-bezier(0.4, 0, 0.2, 1) infinite`,
+                 animationDelay: `-${Math.random() * 5}s`,
+                 opacity: Math.random() * 0.4 + 0.1
+               }}
+             ></div>
+          ))}
+      </div>
+
+      {/* 3. Floating Info Tags (Outside Frame) */}
       <div className="absolute top-[-30px] left-2 md:left-[-20px] md:top-[-20px] z-20 flex flex-row md:flex-col items-start space-x-2 md:space-x-0 md:space-y-2 pointer-events-none">
          {tags.map((tag, i) => (
              <div key={i} className={`
@@ -40,7 +59,7 @@ const CinematicMediaFrame: React.FC<CinematicFrameProps> = ({
          ))}
       </div>
 
-      {/* 3. Main Frame Container */}
+      {/* 4. Main Frame Container */}
       <div className={`
         relative w-full h-full bg-black/60 backdrop-blur-md border ${activeColor === 'electric' ? 'border-cine-electric/30' : 'border-cine-gold/30'}
         overflow-hidden rounded-sm flex flex-col items-center justify-center
