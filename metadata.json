@@ -1,0 +1,5 @@
+{
+  "name": "Cinematic Event Storyboard (Web)",
+  "description": "A high-tech web-based cinematic storyboard generator using CSS animations and DOM elements.",
+  "requestFramePermissions": []
+}

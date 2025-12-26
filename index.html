@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Cinematic Event Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cine: {
+                900: '#020617', // Darker deep blue/black
+                850: '#0f172a',
+                800: '#1e293b',
+                gold: '#fbbf24', // Amber 400
+                goldDim: '#b45309', // Amber 700
+                electric: '#00f3ff', // Electric Cyan
+                glass: 'rgba(255, 255, 255, 0.05)',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+              cinematic: ['Playfair Display', 'serif'],
+            },
+            animation: {
+              'float': 'float 10s ease-in-out infinite',
+              'drift': 'drift 20s linear infinite',
+              'pulse-glow': 'pulseGlow 4s infinite',
+              'grain': 'grain 0.5s steps(5) infinite',
+              'border-trace': 'borderTrace 3s ease-out forwards',
+              'text-reveal': 'textReveal 1.5s cubic-bezier(0.77, 0, 0.175, 1)',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              drift: {
+                '0%': { transform: 'rotate(0deg)' },
+                '100%': { transform: 'rotate(360deg)' },
+              },
+              pulseGlow: {
+                '0%, 100%': { boxShadow: '0 0 10px rgba(251, 191, 36, 0.2)' },
+                '50%': { boxShadow: '0 0 25px rgba(251, 191, 36, 0.5)' },
+              },
+              grain: {
+                '0%, 100%': { transform: 'translate(0, 0)' },
+                '10%': { transform: 'translate(-5%, -5%)' },
+                '20%': { transform: 'translate(-10%, 5%)' },
+                '30%': { transform: 'translate(5%, -10%)' },
+                '40%': { transform: 'translate(-5%, 15%)' },
+                '50%': { transform: 'translate(-10%, 5%)' },
+                '60%': { transform: 'translate(15%, 0)' },
+                '70%': { transform: 'translate(0, 10%)' },
+                '80%': { transform: 'translate(-15%, 0)' },
+                '90%': { transform: 'translate(10%, 5%)' },
+              },
+              borderTrace: {
+                '0%': { clipPath: 'inset(0 100% 0 0)' },
+                '100%': { clipPath: 'inset(0 0 0 0)' },
+              },
+              textReveal: {
+                '0%': { transform: 'translateY(100%)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #020617;
+        color: #e5e7eb;
+        overflow: hidden; /* NO SCROLL */
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+      }
+      
+      /* TRANSITION CLASSES */
+      
+      /* Slide Left/Right */
+      .slide-enter-next { animation: slideInRight 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
+      .slide-exit-next { animation: slideOutLeft 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
+      .slide-enter-prev { animation: slideInLeft 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
+      .slide-exit-prev { animation: slideOutRight 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
+      
+      /* Zoom Through */
+      .zoom-enter-next { animation: zoomIn 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; opacity: 0; }
+      .zoom-exit-next { animation: zoomOut 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+      
+      /* Fade & Blur */
+      .fade-enter-next { animation: fadeInBlur 1.5s ease-out forwards; }
+      .fade-exit-next { animation: fadeOutBlur 1.5s ease-out forwards; }
+      
+      @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+      @keyframes slideOutLeft { from { transform: translateX(0); scale: 0.9; opacity: 0.5; } to { transform: translateX(-100%); scale: 0.9; opacity: 0; } }
+      
+      @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+      @keyframes slideOutRight { from { transform: translateX(0); scale: 0.9; opacity: 0.5; } to { transform: translateX(100%); scale: 0.9; opacity: 0; } }
+
+      @keyframes zoomIn { 0% { transform: scale(2); opacity: 0; filter: blur(20px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+      @keyframes zoomOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.5); opacity: 0; filter: blur(10px); } }
+
+      @keyframes fadeInBlur { 0% { opacity: 0; filter: blur(10px); transform: scale(1.1); } 100% { opacity: 1; filter: blur(0); transform: scale(1); } }
+      @keyframes fadeOutBlur { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(20px); transform: scale(1.1); } }
+
+      .text-glow { text-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+      .text-glow-electric { text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
