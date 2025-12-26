@@ -1,37 +1,140 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { LivingBackground } from './LivingBackground';
 
-// --- SUB-COMPONENTS FOR SLIDES ---
+// --- ADVANCED CINEMATIC UI COMPONENTS ---
 
-const BrandedPlaceholder: React.FC<{ type: string; label: string; animateBorder?: boolean }> = ({ type, label, animateBorder }) => (
-  <div className={`relative w-full max-w-5xl aspect-video bg-black/40 backdrop-blur-sm border border-cine-gold/20 flex flex-col items-center justify-center overflow-hidden rounded-sm group
-    ${animateBorder ? 'animate-pulse-glow' : ''}
-  `}>
-    {/* Animated Border Lines */}
-    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cine-gold to-transparent animate-[slideInRight_3s_linear_infinite]"></div>
-    <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-l from-transparent via-cine-gold to-transparent animate-[slideInLeft_3s_linear_infinite]"></div>
-    
-    {/* Watermark */}
-    <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
-       <h1 className="text-6xl md:text-9xl font-serif font-black text-white text-center leading-none">
-         SUNRISE<br/>SCHOOL
-       </h1>
-    </div>
+interface CinematicFrameProps {
+  type: 'image' | 'video';
+  label: string;
+  subLabel?: string;
+  tags?: string[];
+  activeColor?: 'gold' | 'electric';
+}
 
-    {/* Content */}
-    <div className="z-10 text-center p-8">
-       <div className={`w-16 h-16 mx-auto mb-6 rounded-full border border-cine-gold/40 flex items-center justify-center ${type === 'video' ? 'bg-cine-electric/10' : 'bg-cine-gold/10'}`}>
-          {type === 'video' ? (
-             <svg className="w-6 h-6 text-cine-electric" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          ) : (
-             <svg className="w-6 h-6 text-cine-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          )}
-       </div>
-       <h3 className="text-2xl font-serif text-white mb-2">{label}</h3>
-       <p className="text-gray-500 font-mono text-xs tracking-widest uppercase">Admin Content Area</p>
+const CinematicMediaFrame: React.FC<CinematicFrameProps> = ({ 
+  type, 
+  label, 
+  subLabel = "Admin Content Area", 
+  tags = ["EVENT HIGHLIGHT"], 
+  activeColor = type === 'video' ? 'electric' : 'gold' 
+}) => {
+  const colorClass = activeColor === 'electric' ? 'text-cine-electric border-cine-electric' : 'text-cine-gold border-cine-gold';
+  const bgGlow = activeColor === 'electric' ? 'bg-cine-electric/5' : 'bg-cine-gold/5';
+
+  return (
+    <div className="relative group w-full h-full flex items-center justify-center p-2 md:p-0">
+      
+      {/* 1. Floating Depth Shadow */}
+      <div className={`absolute top-10 left-0 right-0 h-full w-[90%] mx-auto ${bgGlow} blur-3xl opacity-20 transform translate-y-8 animate-pulse-glow transition-all duration-1000 group-hover:opacity-40`}></div>
+
+      {/* 2. Floating Info Tags (Outside Frame) */}
+      <div className="absolute top-[-20px] left-0 md:left-[-20px] z-20 flex flex-col items-start space-y-2 pointer-events-none">
+         {tags.map((tag, i) => (
+             <div key={i} className={`
+                flex items-center space-x-2 bg-black/80 backdrop-blur border-l-2 ${colorClass.split(' ')[1]} 
+                px-3 py-1 animate-[fadeInBlur_0.5s_ease-out_forwards]
+             `} style={{ animationDelay: `${0.5 + i * 0.2}s` }}>
+                <div className={`w-1.5 h-1.5 rounded-full ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} animate-pulse`}></div>
+                <span className={`text-[10px] font-mono tracking-widest ${activeColor === 'electric' ? 'text-cine-electric' : 'text-cine-gold'}`}>{tag}</span>
+             </div>
+         ))}
+      </div>
+
+      {/* 3. Main Frame Container */}
+      <div className={`
+        relative w-full h-full bg-black/60 backdrop-blur-md border ${activeColor === 'electric' ? 'border-cine-electric/30' : 'border-cine-gold/30'}
+        overflow-hidden rounded-sm flex flex-col items-center justify-center
+        transform transition-transform duration-700 group-hover:scale-[1.01]
+      `}>
+         
+         {/* ACTIVE BACKGROUND (When Empty) */}
+         <div className="absolute inset-0 z-0 opacity-40">
+            {/* School Brand Loop */}
+            <div className="absolute top-10 inset-x-0 overflow-hidden opacity-20">
+               <div className="flex whitespace-nowrap animate-marquee">
+                  {[...Array(4)].map((_, i) => (
+                     <span key={i} className="text-4xl font-serif font-black text-transparent stroke-white mx-8 uppercase opacity-30" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
+                        SUNRISE INTERNATIONAL PUBLIC SCHOOL • NECHHWA • SIKAR •
+                     </span>
+                  ))}
+               </div>
+            </div>
+            
+            {/* Moving Gradients */}
+            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[conic-gradient(from_90deg,transparent_0deg,${activeColor === 'electric' ? 'rgba(0,243,255,0.05)' : 'rgba(251,191,36,0.05)'}_180deg,transparent_360deg)] animate-[drift_10s_linear_infinite]`}></div>
+         </div>
+
+         {/* Light Scan Effect */}
+         <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 animate-scan-light pointer-events-none"></div>
+
+         {/* Animated Border Lines */}
+         <div className={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${activeColor === 'electric' ? 'via-cine-electric' : 'via-cine-gold'} to-transparent animate-[slideInRight_4s_linear_infinite] opacity-50`}></div>
+         <div className={`absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-l from-transparent ${activeColor === 'electric' ? 'via-cine-electric' : 'via-cine-gold'} to-transparent animate-[slideInLeft_4s_linear_infinite] opacity-50`}></div>
+
+         {/* Corner Nodes */}
+         <div className="absolute top-0 left-0 w-8 h-8 z-20">
+             <div className={`absolute top-0 left-0 w-full h-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute top-0 left-0 h-full w-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute top-0 left-0 w-1.5 h-1.5 ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} shadow-[0_0_10px_currentColor] animate-corner-pulse`}></div>
+         </div>
+         <div className="absolute top-0 right-0 w-8 h-8 z-20">
+             <div className={`absolute top-0 right-0 w-full h-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute top-0 right-0 h-full w-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute top-0 right-0 w-1.5 h-1.5 ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} shadow-[0_0_10px_currentColor] animate-corner-pulse`}></div>
+         </div>
+         <div className="absolute bottom-0 left-0 w-8 h-8 z-20">
+             <div className={`absolute bottom-0 left-0 w-full h-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute bottom-0 left-0 h-full w-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute bottom-0 left-0 w-1.5 h-1.5 ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} shadow-[0_0_10px_currentColor] animate-corner-pulse`}></div>
+         </div>
+         <div className="absolute bottom-0 right-0 w-8 h-8 z-20">
+             <div className={`absolute bottom-0 right-0 w-full h-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute bottom-0 right-0 h-full w-[1px] ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'}`}></div>
+             <div className={`absolute bottom-0 right-0 w-1.5 h-1.5 ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} shadow-[0_0_10px_currentColor] animate-corner-pulse`}></div>
+         </div>
+
+         {/* Content Center */}
+         <div className="relative z-20 text-center p-8 flex flex-col items-center">
+            {/* Icon Circle */}
+            <div className={`
+               w-20 h-20 rounded-full border border-opacity-30 flex items-center justify-center mb-6 
+               backdrop-blur-sm shadow-[0_0_30px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-500
+               ${activeColor === 'electric' ? 'bg-cine-electric/10 border-cine-electric' : 'bg-cine-gold/10 border-cine-gold'}
+            `}>
+               {type === 'video' ? (
+                  <svg className={`w-8 h-8 ${activeColor === 'electric' ? 'text-cine-electric' : 'text-cine-gold'}`} fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+               ) : (
+                  <svg className={`w-8 h-8 ${activeColor === 'electric' ? 'text-cine-electric' : 'text-cine-gold'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+               )}
+            </div>
+            
+            <h3 className="text-2xl md:text-3xl font-serif text-white mb-3 font-bold drop-shadow-lg">{label}</h3>
+            <p className="text-gray-400 font-mono text-xs tracking-[0.3em] uppercase opacity-80">{subLabel}</p>
+         </div>
+
+         {/* Audio Wave (Only for video) */}
+         {type === 'video' && (
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-end space-x-1 h-8 opacity-60">
+               {[...Array(12)].map((_, i) => (
+                  <div 
+                     key={i} 
+                     className={`w-1 rounded-t-sm ${activeColor === 'electric' ? 'bg-cine-electric' : 'bg-cine-gold'} animate-audio-wave`}
+                     style={{ 
+                        height: '20%', 
+                        animationDelay: `${i * 0.1}s`,
+                        animationDuration: `${0.5 + Math.random() * 0.5}s`
+                     }}
+                  ></div>
+               ))}
+            </div>
+         )}
+         
+         {/* Noise Overlay */}
+         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // --- SLIDE DEFINITIONS ---
 
@@ -80,15 +183,28 @@ const Slide3_Announcement = () => (
 
 const Slide4_Image = () => (
   <div className="h-full w-full flex items-center justify-center p-8">
-      <BrandedPlaceholder type="image" label="Event Poster / Image" animateBorder={false} />
+      <div className="w-full max-w-5xl aspect-video animate-[fadeInBlur_1s_ease-out_forwards]">
+        <CinematicMediaFrame 
+          type="image" 
+          label="Event Poster / Image" 
+          subLabel="Official Event Graphic"
+          tags={["EVENT POSTER", "HIGH RES"]}
+          activeColor="gold"
+        />
+      </div>
   </div>
 );
 
 const Slide5_Video = () => (
   <div className="h-full w-full flex items-center justify-center p-4">
-      <div className="relative w-full max-w-6xl aspect-video">
-         <div className="absolute -inset-4 bg-cine-electric/10 blur-xl rounded-full opacity-50 animate-pulse"></div>
-         <BrandedPlaceholder type="video" label="Main Dance Performance" animateBorder={true} />
+      <div className="w-full max-w-6xl aspect-video animate-[zoomIn_1s_ease-out_forwards]">
+         <CinematicMediaFrame 
+            type="video" 
+            label="Main Dance Performance" 
+            subLabel="4K 60FPS • Cinematic Stage"
+            tags={["MAIN EVENT", "LIVE AUDIO", "4K HDR"]}
+            activeColor="electric"
+         />
       </div>
   </div>
 );
@@ -106,18 +222,24 @@ const Slide6_Message = () => (
 );
 
 const Slide7_Split = () => (
-  <div className="h-full w-full flex flex-col md:flex-row p-4 gap-4">
-      <div className="flex-1 flex items-center justify-center bg-cine-800/20 border border-cine-gold/10 rounded animate-[slideInLeft_1s_ease-out_forwards]">
-         <div className="text-center">
-            <h3 className="text-cine-gold font-serif text-xl mb-2">Behind the Scenes</h3>
-            <p className="text-xs text-gray-500 uppercase">Image Placeholder</p>
-         </div>
+  <div className="h-full w-full flex flex-col md:flex-row p-4 md:p-12 gap-6">
+      <div className="flex-1 animate-[slideInLeft_1s_ease-out_forwards]">
+         <CinematicMediaFrame 
+            type="image" 
+            label="Behind the Scenes" 
+            subLabel="Preparation Moments"
+            tags={["BACKSTAGE", "CANDID"]}
+            activeColor="gold"
+         />
       </div>
-      <div className="flex-1 flex items-center justify-center bg-black/40 border border-cine-electric/10 rounded animate-[slideInRight_1s_ease-out_forwards]">
-         <div className="text-center">
-            <h3 className="text-white font-serif text-xl mb-2">Audience Moments</h3>
-            <p className="text-xs text-gray-500 uppercase">Video Placeholder</p>
-         </div>
+      <div className="flex-1 animate-[slideInRight_1s_ease-out_forwards] delay-200">
+         <CinematicMediaFrame 
+            type="video" 
+            label="Audience Moments" 
+            subLabel="Crowd Reactions"
+            tags={["AUDIENCE CAM", "EMOTION"]}
+            activeColor="electric"
+         />
       </div>
   </div>
 );
@@ -207,7 +329,7 @@ export const CinematicPlayer: React.FC = () => {
   const ExitingSlide = exitingIndex !== null ? SLIDES[exitingIndex] : null;
 
   return (
-    <div className="fixed inset-0 w-full h-full bg-black overflow-hidden touch-none select-none">
+    <div className="fixed inset-0 w-full h-full overflow-hidden touch-none select-none">
       <LivingBackground />
 
       {/* Main Stage */}
