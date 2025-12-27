@@ -309,6 +309,19 @@ export const FeatureTrailer: React.FC = () => {
     }
   }, [isTransitioning]);
 
+  // Activate keyboard navigation only when scrolled down to this section
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      // Only active if scrolled down past the first screen (approx 50% of viewport)
+      if (window.scrollY < window.innerHeight * 0.5) return;
+      
+      if (e.key === 'ArrowRight' || e.key === ' ') handleNext();
+      if (e.key === 'ArrowLeft') handlePrev();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [handleNext, handlePrev]);
+
   const CurrentScene = FEATURE_SCENES[index];
 
   return (

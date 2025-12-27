@@ -393,7 +393,8 @@ export const CinematicPlayer: React.FC = () => {
 
   return (
     // Changed from fixed inset-0 to relative h-full to allow stacking in App.tsx
-    <div className="relative w-full h-[100dvh] overflow-hidden touch-none select-none bg-black">
+    // Removed overflow-hidden and touch-none from the root div to allow document scrolling
+    <div className="relative w-full h-[100dvh] overflow-hidden select-none bg-black">
       <LivingBackground />
 
       {/* Main Stage */}
