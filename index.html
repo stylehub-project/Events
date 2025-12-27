@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Cinematic Event Presentation</title>
+    <title>NEXUS | The Future of News</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -11,56 +11,60 @@
           extend: {
             colors: {
               cine: {
-                900: '#020617', // Darker deep blue/black
-                850: '#0f172a',
-                800: '#1e293b',
-                gold: '#fbbf24', // Amber 400
-                goldDim: '#b45309', // Amber 700
-                electric: '#00f3ff', // Electric Cyan
+                900: '#000205', // Void Black
+                850: '#0B1120', // Midnight
+                800: '#151e32', // Dark Blue
+                gold: '#ef4444', // REPLACED Gold with ALERT RED for News
+                goldDim: '#991b1b', // Dark Red
+                electric: '#3b82f6', // Neon Blue (Tech)
+                electricDim: '#1d4ed8',
                 glass: 'rgba(255, 255, 255, 0.05)',
               }
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
-              cinematic: ['Playfair Display', 'serif'],
+              serif: ['Playfair Display', 'serif'], // Keep serif for high-end editorial feel
+              mono: ['JetBrains Mono', 'monospace'], // Tech feel
+            },
+            backgroundImage: {
+               'tech-grid': "linear-gradient(to right, #1e293b 1px, transparent 1px), linear-gradient(to bottom, #1e293b 1px, transparent 1px)",
             },
             animation: {
               'float': 'float 10s ease-in-out infinite',
-              'drift': 'drift 20s linear infinite',
-              'pulse-glow': 'pulseGlow 4s infinite',
+              'drift': 'drift 60s linear infinite', // Slower for map
+              'pulse-glow': 'pulseGlow 3s infinite',
+              'pulse-fast': 'pulseGlow 1s infinite',
               'grain': 'grain 0.5s steps(5) infinite',
-              'border-trace': 'borderTrace 3s ease-out forwards',
-              'text-reveal': 'textReveal 1.5s cubic-bezier(0.77, 0, 0.175, 1)',
-              'scan-light': 'scanLight 4s ease-in-out infinite',
-              'marquee': 'marquee 20s linear infinite',
+              'border-trace': 'borderTrace 2s ease-out forwards',
+              'text-reveal': 'textReveal 1s cubic-bezier(0.77, 0, 0.175, 1)',
+              'scan-light': 'scanLight 3s ease-in-out infinite',
+              'marquee': 'marquee 30s linear infinite',
               'audio-wave': 'audioWave 1s ease-in-out infinite',
-              'corner-pulse': 'cornerPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'rise': 'rise 5s linear infinite',
+              'rise': 'rise 4s linear infinite',
+              'grid-move': 'gridMove 20s linear infinite',
+              'glitch-anim': 'glitch 2s infinite',
+              'grow-bar': 'growBar 1.5s ease-out forwards',
+              'shield-pulse': 'shieldPulse 2s infinite',
+              'card-stack': 'cardStack 3s ease-in-out infinite',
+              'float-slow': 'float 6s ease-in-out infinite',
             },
             keyframes: {
               float: {
                 '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
+                '50%': { transform: 'translateY(-10px)' },
               },
               drift: {
-                '0%': { transform: 'rotate(0deg)' },
-                '100%': { transform: 'rotate(360deg)' },
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
               },
               pulseGlow: {
-                '0%, 100%': { boxShadow: '0 0 10px rgba(251, 191, 36, 0.2)' },
-                '50%': { boxShadow: '0 0 25px rgba(251, 191, 36, 0.5)' },
+                '0%, 100%': { opacity: '0.4', boxShadow: '0 0 5px currentColor' },
+                '50%': { opacity: '1', boxShadow: '0 0 20px currentColor' },
               },
               grain: {
                 '0%, 100%': { transform: 'translate(0, 0)' },
                 '10%': { transform: 'translate(-5%, -5%)' },
-                '20%': { transform: 'translate(-10%, 5%)' },
-                '30%': { transform: 'translate(5%, -10%)' },
-                '40%': { transform: 'translate(-5%, 15%)' },
                 '50%': { transform: 'translate(-10%, 5%)' },
-                '60%': { transform: 'translate(15%, 0)' },
-                '70%': { transform: 'translate(0, 10%)' },
-                '80%': { transform: 'translate(-15%, 0)' },
                 '90%': { transform: 'translate(10%, 5%)' },
               },
               borderTrace: {
@@ -73,8 +77,7 @@
               },
               scanLight: {
                 '0%': { transform: 'translateX(-100%) skewX(-20deg)', opacity: '0' },
-                '10%': { opacity: '0.3' },
-                '90%': { opacity: '0.3' },
+                '50%': { opacity: '0.5' },
                 '100%': { transform: 'translateX(200%) skewX(-20deg)', opacity: '0' },
               },
               marquee: {
@@ -85,72 +88,85 @@
                 '0%, 100%': { height: '20%' },
                 '50%': { height: '100%' },
               },
-              cornerPulse: {
-                '0%, 100%': { opacity: '0.5', transform: 'scale(1)' },
-                '50%': { opacity: '1', transform: 'scale(1.2)' },
-              },
               rise: {
                 '0%': { transform: 'translateY(100%) scale(0.5)', opacity: '0' },
-                '10%': { opacity: '0.8' },
-                '100%': { transform: 'translateY(-50vh) scale(1.2)', opacity: '0' },
+                '20%': { opacity: '1' },
+                '100%': { transform: 'translateY(-100vh) scale(1)', opacity: '0' },
+              },
+              gridMove: {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(40px)' },
+              },
+              glitch: {
+                '0%': { transform: 'translate(0)' },
+                '20%': { transform: 'translate(-2px, 2px)' },
+                '40%': { transform: 'translate(-2px, -2px)' },
+                '60%': { transform: 'translate(2px, 2px)' },
+                '80%': { transform: 'translate(2px, -2px)' },
+                '100%': { transform: 'translate(0)' },
+              },
+              growBar: {
+                '0%': { height: '0%' },
+                '100%': { height: 'var(--target-height)' },
+              },
+              shieldPulse: {
+                '0%, 100%': { transform: 'scale(1)', filter: 'drop-shadow(0 0 5px rgba(59,130,246,0.5))' },
+                '50%': { transform: 'scale(1.05)', filter: 'drop-shadow(0 0 15px rgba(59,130,246,0.8))' },
+              },
+              cardStack: {
+                '0%': { transform: 'translateY(0) scale(1)', zIndex: 10 },
+                '33%': { transform: 'translateY(10px) scale(0.95)', zIndex: 5 },
+                '66%': { transform: 'translateY(-10px) scale(0.9)', zIndex: 1 },
+                '100%': { transform: 'translateY(0) scale(1)', zIndex: 10 },
               }
             }
           }
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
       body {
-        background-color: #020617;
+        background-color: #000205;
         color: #e5e7eb;
-        overflow: hidden; /* NO SCROLL */
+        overflow-x: hidden;
+        overflow-y: auto; /* Enable Vertical Scroll for App Stacking */
         margin: 0;
-        height: 100vh; /* Fallback */
-        height: 100dvh; /* Mobile viewport fix */
         width: 100vw;
       }
       
       /* TRANSITION CLASSES */
+      .slide-enter-next { animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .slide-exit-next { animation: slideOutLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .slide-enter-prev { animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .slide-exit-prev { animation: slideOutRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
       
-      /* Slide Left/Right */
-      .slide-enter-next { animation: slideInRight 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
-      .slide-exit-next { animation: slideOutLeft 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
-      .slide-enter-prev { animation: slideInLeft 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
-      .slide-exit-prev { animation: slideOutRight 1.2s cubic-bezier(0.6, 0.05, 0.01, 0.99) forwards; }
+      .zoom-enter-next { animation: zoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .zoom-exit-next { animation: zoomOut 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
       
-      /* Zoom Through */
-      .zoom-enter-next { animation: zoomIn 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; opacity: 0; }
-      .zoom-exit-next { animation: zoomOut 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+      .fade-enter-next { animation: fadeInBlur 1s ease-out forwards; }
+      .fade-exit-next { animation: fadeOutBlur 1s ease-out forwards; }
       
-      /* Fade & Blur */
-      .fade-enter-next { animation: fadeInBlur 1.5s ease-out forwards; }
-      .fade-exit-next { animation: fadeOutBlur 1.5s ease-out forwards; }
-      
+      .vertical-enter-next { animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .vertical-exit-next { animation: slideOutUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
       @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-      @keyframes slideOutLeft { from { transform: translateX(0); scale: 0.9; opacity: 0.5; } to { transform: translateX(-100%); scale: 0.9; opacity: 0; } }
+      @keyframes slideOutLeft { from { transform: translateX(0); opacity: 1; filter: brightness(0.5); } to { transform: translateX(-50%); opacity: 0; } }
       
       @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-      @keyframes slideOutRight { from { transform: translateX(0); scale: 0.9; opacity: 0.5; } to { transform: translateX(100%); scale: 0.9; opacity: 0; } }
+      @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; filter: brightness(0.5); } to { transform: translateX(50%); opacity: 0; } }
 
-      @keyframes zoomIn { 0% { transform: scale(2); opacity: 0; filter: blur(20px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
-      @keyframes zoomOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.5); opacity: 0; filter: blur(10px); } }
+      @keyframes zoomIn { 0% { transform: scale(1.1); opacity: 0; filter: blur(5px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+      @keyframes zoomOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0; filter: blur(5px); } }
 
-      @keyframes fadeInBlur { 0% { opacity: 0; filter: blur(10px); transform: scale(1.1); } 100% { opacity: 1; filter: blur(0); transform: scale(1); } }
-      @keyframes fadeOutBlur { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(20px); transform: scale(1.1); } }
+      @keyframes fadeInBlur { 0% { opacity: 0; filter: blur(10px); } 100% { opacity: 1; filter: blur(0); } }
+      @keyframes fadeOutBlur { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(10px); } }
 
-      .text-glow { text-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
-      .text-glow-electric { text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
-      
-      /* Utility for corner borders */
-      .corner-border {
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        border-color: rgba(251, 191, 36, 0.6);
-        border-style: solid;
-        transition: all 0.5s ease;
-      }
+      @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes slideOutUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-50%); opacity: 0; } }
+
+      /* Hide Scrollbar */
+      ::-webkit-scrollbar { width: 0px; background: transparent; }
     </style>
   <script type="importmap">
 {
